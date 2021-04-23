@@ -3,13 +3,14 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 # BUG Does Not Select Correct Schoool, But who cares, it does not show anything on the screening about which school
 # List of variables needed to complete form
-userFirstName = "Martin"
-userLastName = "Czarnecki"
-userEmailAdd = "martin@tuffbizz.com"
+userFirstName = "first_name"
+userLastName = "last_name"
+userEmailAdd = "email"
 userSchoolOrBuilding = "aviation"
 
 healthScreanerURL = "https://healthscreening.schools.nyc/?type=G"
 
+# Using FireFox, but you can change the driver to chrome or whatever your heart desires
 driver = webdriver.Firefox()
 driver.get(healthScreanerURL)
 

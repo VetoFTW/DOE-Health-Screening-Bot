@@ -1,47 +1,64 @@
 import time
+import userDB
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 # BUG Does Not Select Correct Schoool, But who cares, it does not show anything on the screening about which school
 # List of variables needed to complete form
-userFirstName = "first_name"
-userLastName = "last_name"
-userEmailAdd = "email"
-userSchoolOrBuilding = "aviation"
 
-healthScreanerURL = "https://healthscreening.schools.nyc/?type=G"
+myDateTime = time.localtime() 
+timeString = time.strftime("%H:%M:%S", myDateTime)
 
-# Using FireFox, but you can change the driver to chrome or whatever your heart desires
-driver = webdriver.Firefox()
-driver.get(healthScreanerURL)
+try:
+    while True:
+        myDateTime = time.localtime() 
+        timeString = time.strftime("%H:%M:%S", myDateTime)
 
-# Completing The Form
-# The DOE Health Screener only requires you to enter your name, email, and whether or not you are a student, staff, or visitor.
-firstNameElement = driver.find_element_by_id("guest_first_name")
-firstNameElement.send_keys(userFirstName)
+        if timeString == "00:00:00":
+            time.sleep(1)
 
-lastNameElement = driver.find_element_by_id("guest_last_name")
-lastNameElement.send_keys(userLastName)
+            for user in userDB.users:
+                userFirstName = user[0]
+                userLastName = user[1]
+                userEmailAdd = user[2]
+                userSchoolOrBuilding = "aviation"
 
-emailElement = driver.find_element_by_id("guest_email")
-emailElement.send_keys(userEmailAdd)
+                healthScreanerURL = "https://healthscreening.schools.nyc/?type=G"
 
-imAstudentElement = driver.find_element_by_css_selector("label[for=guest_isStudent]").click()
+                driver = webdriver.Firefox()
+                driver.get(healthScreanerURL)
 
-driver.find_element_by_css_selector("span .k-input").click()
-schoolSelectorElement = driver.find_element_by_css_selector(".k-list-filter .k-textbox")
-schoolSelectorElement.send_keys(userSchoolOrBuilding)
+                # Completing The Form
+                # The DOE Health Screener only requires you to enter your name, email, and whether or not you are a student, staff, or visitor.
+                firstNameElement = driver.find_element_by_id("guest_first_name")
+                firstNameElement.send_keys(userFirstName)
 
-clickOnSchool = driver.find_element_by_css_selector("#Location_listbox .k-item").click()
+                lastNameElement = driver.find_element_by_id("guest_last_name")
+                lastNameElement.send_keys(userLastName)
 
-# Submit the Form
-fillOutDailyScreeningButton = driver.find_element_by_css_selector("#btnDailyScreeningSubmit button").click()
+                emailElement = driver.find_element_by_id("guest_email")
+                emailElement.send_keys(userEmailAdd)
 
-# Complete the Questionaire
-for i in range(1, 6):
-    driver.find_element_by_css_selector("label[for=q{}no".format(i)).click()
+                imAstudentElement = driver.find_element_by_css_selector("label[for=guest_isStudent]").click()
 
-# Submit the Questionaire
-SubmitScreeningButton = driver.find_element_by_css_selector("#questions_layout button").click()
+                driver.find_element_by_css_selector("span .k-input").click()
+                schoolSelectorElement = driver.find_element_by_css_selector(".k-list-filter .k-textbox")
+                schoolSelectorElement.send_keys(userSchoolOrBuilding)
 
-# Close the Driver
-driver.close()
+                clickOnSchool = driver.find_element_by_css_selector("#Location_listbox .k-item").click()
+
+                # Submit the Form
+                fillOutDailyScreeningButton = driver.find_element_by_css_selector("#btnDailyScreeningSubmit button").click()
+
+                # Complete the Questionaire
+                for i in range(1, 6):
+                    driver.find_element_by_css_selector("label[for=q{}no".format(i)).click()
+
+                # Submit the Questionaire
+                SubmitScreeningButton = driver.find_element_by_css_selector("#questions_layout button").click()
+
+                # Close the Driver
+                driver.close()
+
+                # Confirmation In Console
+                print("Filled out Health Screener for:", user[0], user[1], "to", user[2])
+except KeyboardInterrupt:
+    pass

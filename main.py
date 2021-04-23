@@ -42,3 +42,6 @@ for i in range(1, 6):
 
 # Submit the Questionaire
 SubmitScreeningButton = driver.find_element_by_css_selector("#questions_layout button").click()
+
+# Close the Driver
+driver.close()

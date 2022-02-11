@@ -1,8 +1,6 @@
 import time
 import userDB
 from selenium import webdriver
-# BUG Does Not Select Correct Schoool, But who cares, it does not show anything on the screening about which school
-# List of variables needed to complete form
 
 myDateTime = time.localtime() 
 timeString = time.strftime("%H:%M:%S", myDateTime)
